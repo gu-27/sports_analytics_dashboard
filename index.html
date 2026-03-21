@@ -181,54 +181,54 @@
     <p>37 programs across the US &mdash; Gonzaga University SBA research dashboard</p>
   </div>
   <div class="header-right">
-    <button class="export-btn" onclick="exportCSV()">⬇ Export filtered CSV</button>
+    <button class="export-btn" id="exportBtn">⬇ Export filtered CSV</button>
   </div>
 </div>
 
 <div class="filter-bar">
   <div class="filter-group">
     <span class="filter-label">Focus</span>
-    <button class="toggle-btn active" data-filter="focus" data-val="all" onclick="setToggle('focus','all')">All</button>
-    <button class="toggle-btn" data-filter="focus" data-val="Analytics" onclick="setToggle('focus','Analytics')">Analytics</button>
-    <button class="toggle-btn" data-filter="focus" data-val="Science" onclick="setToggle('focus','Science')">Science</button>
+    <button class="toggle-btn active" data-filter="focus" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="focus" data-val="Analytics">Analytics</button>
+    <button class="toggle-btn" data-filter="focus" data-val="Science">Science</button>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
     <span class="filter-label">Institution</span>
-    <button class="toggle-btn active" data-filter="inst" data-val="all" onclick="setToggle('inst','all')">All</button>
-    <button class="toggle-btn" data-filter="inst" data-val="Public" onclick="setToggle('inst','Public')">Public</button>
-    <button class="toggle-btn" data-filter="inst" data-val="Private" onclick="setToggle('inst','Private')">Private</button>
+    <button class="toggle-btn active" data-filter="inst" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="inst" data-val="Public">Public</button>
+    <button class="toggle-btn" data-filter="inst" data-val="Private">Private</button>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
     <span class="filter-label">Level</span>
-    <button class="toggle-btn active" data-filter="level" data-val="all" onclick="setToggle('level','all')">All</button>
-    <button class="toggle-btn" data-filter="level" data-val="ug" onclick="setToggle('level','ug')">Undergrad</button>
-    <button class="toggle-btn" data-filter="level" data-val="grad" onclick="setToggle('level','grad')">Graduate</button>
+    <button class="toggle-btn active" data-filter="level" data-val="all">All</button>
+    <button class="toggle-btn" data-filter="level" data-val="ug">Undergrad</button>
+    <button class="toggle-btn" data-filter="level" data-val="grad">Graduate</button>
   </div>
   <div class="filter-divider"></div>
   <div class="filter-group">
     <span class="filter-label">Type</span>
-    <select class="filter-select" id="typeFilter" onchange="applyFilters()">
+    <select class="filter-select" id="typeFilter">
       <option value="all">All Types</option>
     </select>
   </div>
   <div class="filter-group">
     <span class="filter-label">State</span>
-    <select class="filter-select" id="stateFilter" onchange="applyFilters()">
+    <select class="filter-select" id="stateFilter">
       <option value="all">All States</option>
     </select>
   </div>
   <span class="filter-count" id="filterCount"></span>
-  <button class="filter-reset" onclick="resetFilters()">Reset</button>
+  <button class="filter-reset" id="resetBtn">Reset</button>
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('overview')">📊 Overview</button>
-  <button class="tab-btn" onclick="switchTab('map')">🗺️ Map &amp; Directory</button>
-  <button class="tab-btn" onclick="switchTab('credits')">📚 Curriculum</button>
-  <button class="tab-btn" onclick="switchTab('explorer')">🔍 Program Explorer</button>
-  <button class="tab-btn" onclick="switchTab('profile')">📄 Program Profile</button>
+  <button class="tab-btn active" data-tab="overview">📊 Overview</button>
+  <button class="tab-btn" data-tab="map">🗺️ Map &amp; Directory</button>
+  <button class="tab-btn" data-tab="credits">📚 Curriculum</button>
+  <button class="tab-btn" data-tab="explorer">🔍 Program Explorer</button>
+  <button class="tab-btn" data-tab="profile">📄 Program Profile</button>
 </div>
 
 <!-- OVERVIEW -->
@@ -269,22 +269,22 @@
   <div class="card">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
       <h3 style="margin:0">Program Directory</h3>
-      <input class="table-search" id="tableSearch" placeholder="Search programs..." oninput="renderTable()">
+      <input class="table-search" id="tableSearch" placeholder="Search programs...">
       <span id="tableCount" style="font-size:.8rem;color:#64748b;margin-left:auto"></span>
     </div>
     <div class="table-wrap">
       <table class="data-table">
         <thead><tr>
-          <th onclick="sortTable('University Name')">University ↕</th>
-          <th onclick="sortTable('State')">State ↕</th>
-          <th onclick="sortTable('Program type (dropdown)')">Type ↕</th>
-          <th onclick="sortTable('Sports Analytics or Sports Science')">Focus ↕</th>
-          <th onclick="sortTable('Undergrad program')">UG ↕</th>
-          <th onclick="sortTable('Graduate program')">Grad ↕</th>
-          <th onclick="sortTable('Year Established')">Est. ↕</th>
-          <th onclick="sortTable('Technical vs Applied (0-5)')">Tech/Appl ↕</th>
-          <th onclick="sortTable('Degree of Experiental Learning (0-5)')">Exp. Learn ↕</th>
-          <th onclick="sortTable('In-State Tuition')">In-State $ ↕</th>
+          <th>University ↕</th>
+          <th>State ↕</th>
+          <th>Type ↕</th>
+          <th>Focus ↕</th>
+          <th>UG ↕</th>
+          <th>Grad ↕</th>
+          <th>Est. ↕</th>
+          <th>Tech/Appl ↕</th>
+          <th>Exp. Learn ↕</th>
+          <th>In-State $ ↕</th>
           <th></th>
         </tr></thead>
         <tbody id="dirTableBody"></tbody>
@@ -300,9 +300,9 @@
       <h3 style="margin:0">Credit Hours by Subject Area</h3>
       <div class="section-toggle">
         <span class="section-toggle-label">Show:</span>
-        <button class="toggle-btn active" data-val="all" onclick="setCHLevel('all')">All</button>
-        <button class="toggle-btn" data-val="ug" onclick="setCHLevel('ug')">Undergrad</button>
-        <button class="toggle-btn" data-val="grad" onclick="setCHLevel('grad')">Graduate</button>
+        <button class="toggle-btn active" id="chAll" data-level="all">All</button>
+        <button class="toggle-btn" id="chUG" data-level="ug">Undergrad</button>
+        <button class="toggle-btn" id="chGrad" data-level="grad">Graduate</button>
       </div>
     </div>
     <p class="data-note" id="chNote"></p>
@@ -325,10 +325,10 @@
 <!-- PROFILE -->
 <div class="tab-panel" id="tab-profile">
   <div class="profile-select-wrap">
-    <select id="profileSelect" onchange="renderProfile()">
+    <select id="profileSelect">
       <option value="">— Select a university to view its profile —</option>
     </select>
-    <button class="profile-print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+    <button class="profile-print-btn" id="printBtn">🖨 Print / Save PDF</button>
   </div>
   <div id="profileContent">
     <div class="profile-empty">
@@ -342,7 +342,7 @@
 <div class="tab-panel" id="tab-explorer">
   <div class="explorer-select-wrap">
     <label style="font-weight:600;font-size:.875rem;display:block;margin-bottom:6px;color:#374151">Select a Program</label>
-    <select id="explorerSelect" onchange="renderExplorer()">
+    <select id="explorerSelect">
       <option value="">— Choose a university —</option>
     </select>
   </div>
@@ -702,7 +702,7 @@ function renderTable() {
   document.getElementById('dirTableBody').innerHTML = filtered.map(d=>{
     const pt=d['Program type (dropdown)']||'Other';
     const focus=d['Sports Analytics or Sports Science']||'—';
-    return `<tr onclick="openExplorer('${d['University Name'].replace(/'/g,'\\'')}')" title="Open in Explorer">
+    return `<tr data-uni="${d['University Name'].replace(/"/g,'&quot;')}" style="cursor:pointer" title="Click to view profile">
       <td><strong>${d['University Name']}</strong></td>
       <td>${d['State']||'—'}</td>
       <td><span class="badge ${badgeClass(pt)}">${pt}</span></td>
@@ -713,7 +713,7 @@ function renderTable() {
       <td>${d['Technical vs Applied (0-5)']!=null?d['Technical vs Applied (0-5)']+'/5':'—'}</td>
       <td>${d['Degree of Experiental Learning (0-5)']!=null?d['Degree of Experiental Learning (0-5)']+'/5':'—'}</td>
       <td>${d['In-State Tuition']!=null?'$'+Number(d['In-State Tuition']).toLocaleString():'—'}</td>
-      <td><button onclick="event.stopPropagation();openProfile('${d['University Name'].replace(/'/g,"\\'")}');" style="padding:3px 10px;border-radius:6px;border:1.5px solid #cbd5e1;background:white;font-size:.72rem;color:#475569;cursor:pointer;white-space:nowrap" onmouseover="this.style.borderColor='#3b82f6';this.style.color='#3b82f6'" onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#475569'">Profile →</button></td>
+      <td><button data-profile="${d['University Name'].replace(/"/g,'&quot;')}" style="padding:3px 10px;border-radius:6px;border:1.5px solid #cbd5e1;background:white;font-size:.72rem;color:#475569;cursor:pointer;white-space:nowrap">Profile →</button></td>
     </tr>`;
   }).join('');
 }
@@ -1107,18 +1107,59 @@ function exportCSV() {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
-function showError(e) {
-  var el = document.getElementById('js-error-banner');
-  if (!el) { el = document.createElement('div'); el.id='js-error-banner';
-    el.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ef4444;color:white;padding:12px 20px;font-family:monospace;font-size:13px;z-index:9999;white-space:pre-wrap';
-    document.body.appendChild(el); }
-  el.textContent = 'JS Error: ' + e.message + '\n' + (e.stack||'').split('\n').slice(0,3).join('\n');
-}
-window.onerror = function(msg, src, line, col, err) { showError(err || {message: msg + ' (line '+line+')'}); };
-try {
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Tab buttons
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+  });
+
+  // Filter toggle buttons
+  document.querySelectorAll('.toggle-btn[data-filter]').forEach(function(btn) {
+    btn.addEventListener('click', function() { setToggle(btn.dataset.filter, btn.dataset.val); });
+  });
+
+  // Filter dropdowns
+  document.getElementById('typeFilter').addEventListener('change', applyFilters);
+  document.getElementById('stateFilter').addEventListener('change', applyFilters);
+
+  // Reset button
+  document.getElementById('resetBtn').addEventListener('click', resetFilters);
+
+  // Export button
+  document.getElementById('exportBtn').addEventListener('click', exportCSV);
+
+  // Print button
+  document.getElementById('printBtn').addEventListener('click', function() { window.print(); });
+
+  // CH level toggles
+  ['chAll','chUG','chGrad'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', function() { setCHLevel(el.dataset.level); });
+  });
+
+  // Table search
+  document.getElementById('tableSearch').addEventListener('input', renderTable);
+
+  // Explorer select
+  document.getElementById('explorerSelect').addEventListener('change', renderExplorer);
+
+  // Profile select
+  document.getElementById('profileSelect').addEventListener('change', renderProfile);
+
+
+  // Event delegation for dynamic table rows
+  document.getElementById('dirTableBody').addEventListener('click', function(e) {
+    var tr = e.target.closest('tr[data-uni]');
+    if (tr) openProfile(tr.dataset.uni);
+    var btn = e.target.closest('button[data-profile]');
+    if (btn) { e.stopPropagation(); openProfile(btn.dataset.profile); }
+  });
+
+  // Run
   populateFilterDropdowns();
   applyFilters();
-} catch(e) { showError(e); }
+});
 </script>
 </body>
 </html>
