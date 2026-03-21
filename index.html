@@ -166,7 +166,7 @@
     .header, .filter-bar, .tabs, .profile-select-wrap, .profile-print-btn { display:none !important; }
     body { background:white; }
     .tab-panel { display:block !important; padding:0; }
-    #tab-overview, #tab-map, #tab-credits, #tab-explorer { display:none !important; }
+    #tab-overview, #tab-map, #tab-credits { display:none !important; }
     #tab-profile { display:block !important; }
     .profile-page { box-shadow:none; border-radius:0; max-width:100%; }
     .profile-hero { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -227,8 +227,7 @@
   <button class="tab-btn active" data-tab="overview">📊 Overview</button>
   <button class="tab-btn" data-tab="map">🗺️ Map &amp; Directory</button>
   <button class="tab-btn" data-tab="credits">📚 Curriculum</button>
-  <button class="tab-btn" data-tab="explorer">🔍 Program Explorer</button>
-  <button class="tab-btn" data-tab="profile">📄 Program Profile</button>
+  <button class="tab-btn" data-tab="profile">🔍 Program Explorer</button>
 </div>
 
 <!-- OVERVIEW -->
@@ -322,31 +321,20 @@
   </div>
 </div>
 
-<!-- PROFILE -->
+<!-- PROGRAM EXPLORER -->
 <div class="tab-panel" id="tab-profile">
   <div class="profile-select-wrap">
     <select id="profileSelect">
-      <option value="">— Select a university to view its profile —</option>
+      <option value="">— Choose a program to explore —</option>
     </select>
     <button class="profile-print-btn" id="printBtn">🖨 Print / Save PDF</button>
   </div>
   <div id="profileContent">
     <div class="profile-empty">
-      <div style="font-size:2.5rem">📄</div>
-      <p>Select a program above to generate its full profile.</p>
+      <div style="font-size:2.5rem">🔍</div>
+      <p>Select a program above to view its full profile.</p>
     </div>
   </div>
-</div>
-
-<!-- EXPLORER -->
-<div class="tab-panel" id="tab-explorer">
-  <div class="explorer-select-wrap">
-    <label style="font-weight:600;font-size:.875rem;display:block;margin-bottom:6px;color:#374151">Select a Program</label>
-    <select id="explorerSelect">
-      <option value="">— Choose a university —</option>
-    </select>
-  </div>
-  <div id="explorerDetail"></div>
 </div>
 
 <script>
@@ -449,7 +437,7 @@ function resetFilters() {
 }
 
 // ── Tabs ──────────────────────────────────────────────────────────────────
-const TABS = ['overview','map','credits','explorer','profile'];
+const TABS = ['overview','map','credits','profile'];
 function switchTab(name) {
   TABS.forEach((t,i) => {
     document.getElementById('tab-'+t).classList.toggle('active',t===name);
@@ -470,7 +458,7 @@ function renderAll() {
   renderMap();
   renderTable();
   renderCredits();
-  populateExplorerSelect(data);
+  populateProfileSelect(data);
 }
 
 // ── Stats ─────────────────────────────────────────────────────────────────
@@ -800,115 +788,17 @@ function renderCredits() {
   },{responsive:true,displayModeBar:false});
 }
 
-// ── Explorer ──────────────────────────────────────────────────────────────
-function populateExplorerSelect(data) {
-  const sel=document.getElementById('explorerSelect');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">— Choose a university —</option>';
+// ── Profile select ────────────────────────────────────────────────────────
+function populateProfileSelect(data) {
   const pSel=document.getElementById('profileSelect');
   const pCur=pSel.value;
-  pSel.innerHTML='<option value="">— Select a university to view its profile —</option>';
+  pSel.innerHTML='<option value="">— Choose a program to explore —</option>';
   [...data].sort((a,b)=>a['University Name'].localeCompare(b['University Name'])).forEach(d=>{
     const o=document.createElement('option');
     o.value=d['University Name']; o.textContent=d['University Name'];
-    sel.appendChild(o);
-    pSel.appendChild(o.cloneNode(true));
+    pSel.appendChild(o);
   });
-  if (cur && [...sel.options].some(o=>o.value===cur)) sel.value=cur;
   if (pCur && [...pSel.options].some(o=>o.value===pCur)) pSel.value=pCur;
-}
-
-function openExplorer(name) {
-  switchTab('explorer');
-  document.getElementById('explorerSelect').value=name;
-  renderExplorer();
-  window.scrollTo(0,0);
-}
-
-function renderExplorer() {
-  const name=document.getElementById('explorerSelect').value;
-  const detail=document.getElementById('explorerDetail');
-  if (!name) { detail.innerHTML=''; return; }
-  const d=RAW_DATA.find(r=>r['University Name']===name);
-  if (!d) return;
-
-  const pt=d['Program type (dropdown)']||'—';
-  const focus=(d['Sports Analytics or Sports Science']||'—').trim();
-  const ta=d['Technical vs Applied (0-5)'];
-  const el=d['Degree of Experiental Learning (0-5)'];
-  const hasUG=d['Undergrad program']==='Yes', hasGrad=d['Graduate program']==='Yes';
-  const level=hasUG&&hasGrad?'UG + Graduate':hasUG?'Undergraduate':hasGrad?'Graduate':'—';
-  const website = d['Website link '] || d['Website link'] || '';
-
-  const infoFields=[
-    ['Department / College',d['Department/College housed in (ex: Business, Education, Economics, etc)']],
-    ['Analytics Focus',d['Sports analytics focus (business, tech, human phys, etc)']],
-    ['Technical Aspects',d['Technical Aspects: (Computer Science, Data Engineering, Algorithms, Machine Learning, Other, N/A)']],
-    ['Applied Aspects',d['Applied Aspects: (Marketing, Sports Management, Finance, Kinesiology, Human Physology, Other, N/A']],
-    ['External Partners',d['External partners (Athletics, community)']],
-    ['Internship / Capstone',d['Required internship or capstone (if applicable)']],
-    ['In-State Tuition',d['In-State Tuition']!=null?'$'+Number(d['In-State Tuition']).toLocaleString():null],
-    ['Out-of-State Tuition',d['Out-of-State Tuition']!=null?'$'+Number(d['Out-of-State Tuition']).toLocaleString():null],
-    ['Student Clubs',d['Student clubs (if applicable)']],
-  ].filter(([k,v])=>v!=null&&v!==''&&v!=='N/A');
-
-  const expandables=[
-    ['Mission Statement',d['Mission Statement']],
-    ["Problem They're Solving",d["Problem They're solving"]],
-  ].filter(([k,v])=>v);
-
-  const chData=CH_COLS.map(c=>({label:CH_LABELS[c],val:d[c]||0})).filter(r=>r.val>0);
-
-  const websiteHTML = website && website.startsWith('http')
-    ? `<a href="${website}" target="_blank" rel="noopener" class="website-link">🔗 Visit program website</a>`
-    : '';
-
-  detail.innerHTML=`
-    <div class="detail-header">
-      <h2>${d['University Name']}</h2>
-      <div class="prog-name">${d['Program Name']||''}${websiteHTML?'  '+websiteHTML:''}
-      </div>
-    </div>
-    <div class="chip-row">
-      <span class="chip badge ${badgeClass(pt)}">${pt}</span>
-      <span class="chip">${level}</span>
-      <span class="chip badge badge-${(d['Private/Public']||'unknown').toLowerCase()}">${d['Private/Public']||'—'}</span>
-      <span class="chip">${d['City']?d['City']+', ':''}${d['State']||''}</span>
-      ${d['Year Established']?`<span class="chip">Est. ${Math.round(d['Year Established'])}</span>`:''}
-      ${['Analytics','Science'].includes(focus)?`<span class="chip badge badge-${focus.toLowerCase()}">${focus}</span>`:''}
-    </div>
-    <div class="scale-row">
-      <div class="scale-card">
-        <div class="scale-lbl">Technical vs. Applied</div>
-        ${ta!=null?`<div class="scale-bar-wrap"><div class="scale-bar-bg"><div class="scale-bar-fill" style="width:${(ta/5)*100}%;background:linear-gradient(90deg,#3b82f6,#8b5cf6)"></div></div><div class="scale-val">${ta}/5</div></div><div class="axis-labels"><span>← Applied</span><span>Technical →</span></div>`
-        :'<span style="color:#94a3b8;font-size:.85rem">Not rated</span>'}
-      </div>
-      <div class="scale-card">
-        <div class="scale-lbl">Experiential Learning</div>
-        ${el!=null?`<div class="scale-bar-wrap"><div class="scale-bar-bg"><div class="scale-bar-fill" style="width:${(el/5)*100}%;background:linear-gradient(90deg,#10b981,#3b82f6)"></div></div><div class="scale-val">${el}/5</div></div><div class="axis-labels"><span>← Low</span><span>High →</span></div>`
-        :'<span style="color:#94a3b8;font-size:.85rem">Not rated</span>'}
-      </div>
-    </div>
-    <div class="info-grid">
-      ${infoFields.map(([k,v])=>`<div class="info-item"><div class="info-key">${k}</div><div class="info-val">${v}</div></div>`).join('')}
-    </div>
-    ${expandables.map(([k,v])=>`<details class="expandable"><summary>${k}</summary><div class="exp-body">${v}</div></details>`).join('')}
-    ${chData.length?`<details class="expandable" open><summary>Credit Hour Breakdown</summary><div class="exp-body"><div id="explorerCH" style="height:220px"></div></div></details>`:''}
-  `;
-
-  if (chData.length) {
-    setTimeout(()=>Plotly.newPlot('explorerCH',[{
-      type:'bar',orientation:'h',
-      y:chData.map(r=>r.label),x:chData.map(r=>r.val),
-      marker:{color:chData.map((_,i)=>SUBJ_COLORS[i%SUBJ_COLORS.length])},
-      hovertemplate:'%{y}: %{x} hrs<extra></extra>'
-    }],{
-      margin:{l:150,r:20,t:10,b:30},
-      xaxis:{title:'Credit Hours',gridcolor:'#f1f5f9'},
-      yaxis:{automargin:true},
-      plot_bgcolor:'#f8fafc',paper_bgcolor:'#f8fafc',height:220
-    },{responsive:true,displayModeBar:false}),50);
-  }
 }
 
 // ── Profile ───────────────────────────────────────────────────────────────
@@ -957,6 +847,7 @@ function renderProfile() {
   const internship     = d['Required internship or capstone (if applicable)'] || '';
   const clubs          = d['Student clubs (if applicable)'] || '';
   const mission        = d['Mission Statement'] || '';
+  const vision         = d['Vision Statement'] || '';
   const problem        = d["Problem They're solving"] || '';
   const ugHours        = d['Credit Hours Undergraduate  (or N/A)'] || '';
   const gradHours      = d['Credit Hours Graduate (or N/A)'] || '';
@@ -1068,6 +959,10 @@ function renderProfile() {
         <div class="profile-section-title">Problem They're Solving</div>
         <div class="profile-text-block"><p>${problem}</p></div>` : ''}
 
+        ${vision ? `
+        <div class="profile-section-title">Vision Statement</div>
+        <div class="profile-text-block"><p>${vision}</p></div>` : ''}
+
       </div>
     </div>
   `;
@@ -1140,9 +1035,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Table search
   document.getElementById('tableSearch').addEventListener('input', renderTable);
-
-  // Explorer select
-  document.getElementById('explorerSelect').addEventListener('change', renderExplorer);
 
   // Profile select
   document.getElementById('profileSelect').addEventListener('change', renderProfile);
