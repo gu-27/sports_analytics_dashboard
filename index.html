@@ -934,10 +934,19 @@ function renderProfile() {
         </div>
         <hr class="profile-divider">` : ''}
 
-        <!-- Credit hours chart -->
+        <!-- Credit hours charts -->
         ${chData.length ? `
         <div class="profile-section-title">Credit Hours by Subject</div>
-        <div id="profileCHChart" style="height:${Math.max(160, chData.length * 42)}px;margin-bottom:20px"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;align-items:start">
+          <div>
+            <div style="font-size:.7rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Hours per Discipline</div>
+            <div id="profileCHChart" style="height:${Math.max(160, chData.length * 42)}px"></div>
+          </div>
+          <div>
+            <div style="font-size:.7rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Share of Tracked Hours</div>
+            <div id="profileCHPie" style="height:${Math.max(220, chData.length * 42)}px"></div>
+          </div>
+        </div>
         <hr class="profile-divider">` : ''}
 
         <!-- Partnerships & experiential -->
@@ -967,23 +976,42 @@ function renderProfile() {
     </div>
   `;
 
-  // Render credit hours chart
+  // Render credit hours charts
   if (chData.length) {
-    setTimeout(() => Plotly.newPlot('profileCHChart', [{
-      type: 'bar', orientation: 'h',
-      y: chData.map(r => r.label),
-      x: chData.map(r => r.val),
-      text: chData.map(r => r.val + ' hrs'),
-      textposition: 'outside',
-      marker: { color: chData.map((_, i) => SUBJ_COLORS[i % SUBJ_COLORS.length]) },
-      hovertemplate: '%{y}: %{x} hrs<extra></extra>'
-    }], {
-      margin: { l: 150, r: 60, t: 10, b: 30 },
-      xaxis: { title: 'Credit Hours', gridcolor: '#f1f5f9', range: [0, Math.max(...chData.map(r=>r.val)) * 1.25] },
-      yaxis: { automargin: true, tickfont: { size: 12 } },
-      plot_bgcolor: '#f8fafc', paper_bgcolor: '#f8fafc',
-      height: Math.max(160, chData.length * 42)
-    }, { responsive: true, displayModeBar: false }), 80);
+    const chHeight = Math.max(220, chData.length * 42);
+    setTimeout(() => {
+      Plotly.newPlot('profileCHChart', [{
+        type: 'bar', orientation: 'h',
+        y: chData.map(r => r.label),
+        x: chData.map(r => r.val),
+        text: chData.map(r => r.val + ' hrs'),
+        textposition: 'outside',
+        marker: { color: chData.map((_, i) => SUBJ_COLORS[i % SUBJ_COLORS.length]) },
+        hovertemplate: '%{y}: %{x} hrs<extra></extra>'
+      }], {
+        margin: { l: 150, r: 60, t: 10, b: 30 },
+        xaxis: { title: 'Credit Hours', gridcolor: '#f1f5f9', range: [0, Math.max(...chData.map(r=>r.val)) * 1.25] },
+        yaxis: { automargin: true, tickfont: { size: 12 } },
+        plot_bgcolor: '#f8fafc', paper_bgcolor: '#f8fafc',
+        height: chHeight
+      }, { responsive: true, displayModeBar: false });
+
+      Plotly.newPlot('profileCHPie', [{
+        type: 'pie', hole: 0.45,
+        labels: chData.map(r => r.label),
+        values: chData.map(r => r.val),
+        marker: { colors: chData.map((_, i) => SUBJ_COLORS[i % SUBJ_COLORS.length]) },
+        textinfo: 'percent',
+        hovertemplate: '<b>%{label}</b><br>%{value} hrs (%{percent})<extra></extra>',
+        sort: false
+      }], {
+        margin: { l: 10, r: 10, t: 10, b: 10 },
+        paper_bgcolor: '#f8fafc',
+        height: chHeight,
+        legend: { orientation: 'v', font: { size: 11 }, x: 1, y: 0.5, xanchor: 'left' },
+        showlegend: true
+      }, { responsive: true, displayModeBar: false });
+    }, 80);
   }
 }
 
