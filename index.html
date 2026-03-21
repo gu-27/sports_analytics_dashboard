@@ -1107,8 +1107,18 @@ function exportCSV() {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
-populateFilterDropdowns();
-applyFilters();
+function showError(e) {
+  var el = document.getElementById('js-error-banner');
+  if (!el) { el = document.createElement('div'); el.id='js-error-banner';
+    el.style.cssText='position:fixed;bottom:0;left:0;right:0;background:#ef4444;color:white;padding:12px 20px;font-family:monospace;font-size:13px;z-index:9999;white-space:pre-wrap';
+    document.body.appendChild(el); }
+  el.textContent = 'JS Error: ' + e.message + '\n' + (e.stack||'').split('\n').slice(0,3).join('\n');
+}
+window.onerror = function(msg, src, line, col, err) { showError(err || {message: msg + ' (line '+line+')'}); };
+try {
+  populateFilterDropdowns();
+  applyFilters();
+} catch(e) { showError(e); }
 </script>
 </body>
 </html>
