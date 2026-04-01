@@ -9,15 +9,15 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Inter, system-ui, -apple-system, sans-serif; background: #f1f5f9; color: #1e293b; }
 
-  .header { background: #0f172a; color: white; padding: 18px 32px; display:flex; align-items:center; justify-content:space-between; }
-  .header-left h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; }
-  .header-left p { color: #94a3b8; font-size: 0.82rem; margin-top: 3px; }
+  .header { background: linear-gradient(135deg, #0a1628 0%, #0f172a 100%); color: white; padding: 18px 32px; display:flex; align-items:center; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,.06); }
+  .header-left h1 { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.4px; }
+  .header-left p { color: #64748b; font-size: 0.82rem; margin-top: 3px; }
   .header-right { display:flex; gap:10px; align-items:center; }
-  .export-btn { padding:7px 16px; border-radius:8px; border:1.5px solid #334155; background:transparent; color:#94a3b8; font-size:.8rem; cursor:pointer; transition:all .15s; }
-  .export-btn:hover { border-color:#3b82f6; color:#3b82f6; }
+  .export-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:8px; border:1.5px solid #1e293b; background:transparent; color:#64748b; font-size:.8rem; cursor:pointer; transition:all .2s; }
+  .export-btn:hover { border-color:#3b82f6; color:#3b82f6; background:rgba(59,130,246,.06); }
 
   /* Filter bar */
-  .filter-bar { background:white; border-bottom:1px solid #e2e8f0; padding:10px 32px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .filter-bar { background:white; border-bottom:1px solid #e2e8f0; padding:10px 32px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,.07); }
   .filter-group { display:flex; align-items:center; gap:5px; }
   .filter-label { font-size:.7rem; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
   .toggle-btn { padding:4px 11px; border-radius:99px; border:1.5px solid #cbd5e1; background:white; font-size:.78rem; cursor:pointer; color:#475569; transition:all .15s; }
@@ -32,9 +32,9 @@
 
   /* Tabs */
   .tabs { background:white; border-bottom:1px solid #e2e8f0; padding:0 32px; display:flex; }
-  .tab-btn { padding:13px 22px; font-size:.875rem; font-weight:500; color:#64748b; border:none; background:none; cursor:pointer; border-bottom:3px solid transparent; transition:all .15s; white-space:nowrap; }
-  .tab-btn.active { color:#3b82f6; border-bottom-color:#3b82f6; font-weight:600; }
-  .tab-btn:hover:not(.active) { color:#1e293b; }
+  .tab-btn { display:inline-flex; align-items:center; gap:6px; padding:13px 20px; font-size:.875rem; font-weight:500; color:#64748b; border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; transition:color .15s, border-color .15s; white-space:nowrap; }
+  .tab-btn.active { color:#2563eb; border-bottom-color:#2563eb; font-weight:600; }
+  .tab-btn:hover:not(.active) { color:#1e293b; background:#f8fafc; }
 
   /* Content */
   .tab-panel { display:none; padding:24px 32px; }
@@ -42,12 +42,13 @@
 
   /* Stat cards */
   .stat-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:22px; }
-  .stat-card { background:white; border-radius:12px; padding:18px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08); text-align:center; }
+  .stat-card { background:white; border-radius:12px; padding:18px 16px; box-shadow:0 1px 3px rgba(0,0,0,.07); border:1px solid #f1f5f9; text-align:center; transition:box-shadow .2s, transform .2s; cursor:default; }
+  .stat-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.1); transform:translateY(-1px); }
   .stat-card .val { font-size:1.9rem; font-weight:700; color:#0f172a; line-height:1; }
   .stat-card .lbl { font-size:.75rem; color:#64748b; margin-top:5px; font-weight:500; }
 
   /* Cards */
-  .card { background:white; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.08); margin-bottom:18px; }
+  .card { background:white; border-radius:12px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,.07); border:1px solid #f1f5f9; margin-bottom:18px; }
   .card h3 { font-size:.92rem; font-weight:600; color:#0f172a; margin-bottom:12px; }
   .card-note { font-size:.75rem; color:#94a3b8; margin-top:6px; }
   .chart-row { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
@@ -120,12 +121,12 @@
   /* ── Program Profile ─────────────────────────────────────────────────── */
   .profile-select-wrap { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
   .profile-select-wrap select { flex:1; max-width:460px; padding:10px 14px; border-radius:8px; border:1.5px solid #cbd5e1; font-size:.95rem; color:#1e293b; background:white; }
-  .profile-print-btn { padding:9px 20px; border-radius:8px; border:none; background:#0f172a; color:white; font-size:.85rem; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .profile-print-btn { padding:9px 18px; border-radius:8px; border:none; background:#0f172a; color:white; font-size:.85rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:background .2s; }
   .profile-print-btn:hover { background:#1e293b; }
 
   .profile-page { background:white; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.1); overflow:hidden; max-width:960px; margin:0 auto; }
 
-  .profile-hero { background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); color:white; padding:32px 36px; }
+  .profile-hero { background:linear-gradient(135deg,#0a1628 0%,#0f172a 50%,#1a3a6b 100%); color:white; padding:32px 36px; }
   .profile-hero-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
   .profile-uni { font-size:1.6rem; font-weight:700; letter-spacing:-.4px; line-height:1.2; }
   .profile-prog-name { font-size:.9rem; color:#94a3b8; margin-top:5px; line-height:1.4; }
@@ -181,7 +182,10 @@
     <p>37 programs across the US &mdash; Gonzaga University SBA research dashboard</p>
   </div>
   <div class="header-right">
-    <button class="export-btn" id="exportBtn">⬇ Export filtered CSV</button>
+    <button class="export-btn" id="exportBtn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export filtered CSV
+    </button>
   </div>
 </div>
 
@@ -224,10 +228,22 @@
 </div>
 
 <div class="tabs">
-  <button class="tab-btn active" data-tab="overview">📊 Overview</button>
-  <button class="tab-btn" data-tab="map">🗺️ Map &amp; Directory</button>
-  <button class="tab-btn" data-tab="credits">📚 Curriculum</button>
-  <button class="tab-btn" data-tab="profile">🔍 Program Explorer</button>
+  <button class="tab-btn active" data-tab="overview">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Overview
+  </button>
+  <button class="tab-btn" data-tab="map">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+    Map &amp; Directory
+  </button>
+  <button class="tab-btn" data-tab="credits">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Curriculum
+  </button>
+  <button class="tab-btn" data-tab="profile">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    Program Explorer
+  </button>
 </div>
 
 <!-- OVERVIEW -->
@@ -327,11 +343,14 @@
     <select id="profileSelect">
       <option value="">— Choose a program to explore —</option>
     </select>
-    <button class="profile-print-btn" id="printBtn">🖨 Print / Save PDF</button>
+    <button class="profile-print-btn" id="printBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / Save PDF
+    </button>
   </div>
   <div id="profileContent">
     <div class="profile-empty">
-      <div style="font-size:2.5rem">🔍</div>
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <p>Select a program above to view its full profile.</p>
     </div>
   </div>
@@ -813,7 +832,7 @@ function renderProfile() {
   const name = document.getElementById('profileSelect').value;
   const container = document.getElementById('profileContent');
   if (!name) {
-    container.innerHTML = '<div class="profile-empty"><div style="font-size:2.5rem">📄</div><p>Select a program above to generate its full profile.</p></div>';
+    container.innerHTML = '<div class="profile-empty"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Select a program above to generate its full profile.</p></div>';
     return;
   }
   const d = RAW_DATA.find(r => r['University Name'] === name);
