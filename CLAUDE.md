@@ -40,3 +40,17 @@ Interactive dashboard of 35 NCAA sports analytics and sports science degree prog
 
 ## Deployment
 Push to `main` → GitHub Pages auto-deploys. Also manually copy `index.html` to `correia27/research/sports-analytics/index.html` and push that repo too.
+
+---
+
+## Skills library — read before writing code
+
+All skills live at **https://github.com/gu-27/claude-skills** (public) and are installed locally at `~/.claude/commands/`.
+
+| Skill | Why it applies here |
+|---|---|
+| [`dashboard.md`](https://github.com/gu-27/claude-skills/blob/main/dashboard.md) | Tab navigation, KPI cards, filter pills, sortable tables, number formatting, section/card layout. **Note:** this project uses Plotly.js (not Chart.js) — chart-specific patterns differ, but all other UI patterns apply. |
+| [`webdev.md`](https://github.com/gu-27/claude-skills/blob/main/webdev.md) | Stack conventions — plain HTML/CSS/JS, no build step, GitHub Pages from root |
+| [`gonzaga-brand.md`](https://github.com/gu-27/claude-skills/blob/main/gonzaga-brand.md) | GU color palette and typography — `--navy #041E42`, `--red #C8102E`, Outfit + Libre Baskerville |
+
+> **Collaborator note:** This project uses **Plotly.js** (not Chart.js). The `dashboard.md` skill covers Chart.js patterns — translate the concepts (destroy-before-redraw → `Plotly.purge()`, canvas sizing → layout height) but don't copy chart code verbatim.
